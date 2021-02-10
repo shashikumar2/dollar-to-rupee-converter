@@ -1,0 +1,57 @@
+<head>
+    <title></title>
+
+</head>
+<body>
+    <div id='root'>
+
+    </div>
+    
+   
+    <script src="C:\Users\SHASHI NIRANJAN\jan-2020-mern\react\js\react.development.js"></script>
+
+    
+    <script src="C:\Users\SHASHI NIRANJAN\jan-2020-mern\react\js\react-dom.development.js"></script>
+  
+    <script src= "C:\Users\SHASHI NIRANJAN\jan-2020-mern\react\js\babel.js"></script>
+    <script type="text/babel">
+        const rootHandle=document.getElementById('root')
+        class Currency extends React.Component{
+        constructor(){
+            super()
+            this.state={
+                usd:0,
+                inr:0
+            }
+        }
+        mcount=(e)=>{
+            this.setState({usd:e.target.value})
+        }
+        componentDidMount(){
+            //https://api.exchangerate-api.com/v4/latest/USD
+            const xhr=new XMLHttpRequest()
+            xhr.open('GET','http://apilayer.net/api/live?access_key=88cfccf936896cf85a1369e1ad17bc8b&currencies=INR&source=USD&format=1')
+            xhr.send()
+            xhr.onload=()=>{
+                const usd=JSON.parse(xhr.responseText)
+                this.setState({inr:usd.quotes.USDINR})
+                
+            }
+        }
+        render(){
+            return(
+                <div>
+                    <h1>Currency Convertor</h1>
+                    <h2>INR-{(this.state.inr*this.state.usd ).toFixed(2)}</h2>
+                    <h2>USD-{this.state.usd}</h2>
+                    <input type='range' min='0' max='100' step='1' onChange={this.mcount} defaultValue='0'/>
+                    <p>note- 1 USD={(this.state.inr).toFixed(2)} INR</p>
+                </div>
+            )
+        }
+     }
+
+        ReactDOM.render(<Currency/>,rootHandle)
+    </script>
+</body>
+</html>
